@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cap Web — assistant BTP aide à la décision</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Cap Web</h1>
+      <p>
+        Assistant d'aide à la décision pour les professionnels du bâtiment.
+        Moteur de règles local — RE2020, rénovation, PMR, patrimoine.
+      </p>
+    </header>
+    <main>
+      <section aria-labelledby="titre-chat">
+        <h2 id="titre-chat">Discussion</h2>
+        <ul id="messages" aria-live="polite" aria-label="Messages"></ul>
+        <form id="chat-form">
+          <label for="message">Votre message (280 caractères maximum)</label>
+          <textarea
+            id="message"
+            name="message"
+            rows="3"
+            maxlength="280"
+            required
+          ></textarea>
+          <div class="actions">
+            <button type="submit">Envoyer</button>
+            <button type="button" id="effacer">Effacer la conversation</button>
+          </div>
+        </form>
+        <p id="status" role="status"></p>
+      </section>
+    </main>
+    <footer>
+      <p>
+        Serveur local fourni pour l’atelier. <span id="version">version…</span>
+      </p>
+    </footer>
+    <script type="module" src="./js/app.js"></script>
+  </body>
+</html>
