@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Cap Web — assistant BTP aide à la décision</title>
+    <title>Archia — assistant BTP aide à la décision</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header>
-      <h1>Cap Web</h1>
+      <h1><span aria-hidden="true">🏛️</span> Archia</h1>
       <p>
         Assistant d'aide à la décision pour les professionnels du bâtiment.
         Moteur de règles local — RE2020, rénovation, PMR, patrimoine.
@@ -17,6 +17,8 @@
     <main>
       <section aria-labelledby="titre-chat">
         <h2 id="titre-chat">Discussion</h2>
+        <p id="accueil"></p>
+        <div id="suggestions" aria-label="Questions suggérées"></div>
         <ul id="messages" aria-live="polite" aria-label="Messages"></ul>
         <form id="chat-form">
           <label for="message">Votre message (280 caractères maximum)</label>
