@@ -1,4 +1,5 @@
 import { validateMessage, replyTo } from "./brain.js";
+import { persona } from "./persona.js";
 import { renderMessages } from "./view.js";
 
 const formulaire = document.querySelector("#chat-form");
@@ -8,9 +9,35 @@ const versionElt = document.querySelector("#version");
 const champ = document.querySelector("#message");
 const liste = document.querySelector("#messages");
 const btnEffacer = document.querySelector("#effacer");
+const accueil = document.querySelector("#accueil");
+const suggestions = document.querySelector("#suggestions");
 
 const CLE_STOCKAGE = "capweb.historique";
 const historique = [];
+
+function actualiserAccueil() {
+  if (!accueil) return;
+  accueil.textContent = persona.accueil;
+  accueil.hidden = historique.length > 0;
+}
+
+function construireSuggestions() {
+  if (!suggestions || !champ) return;
+  suggestions.replaceChildren(
+    ...persona.suggestions.map((texte) => {
+      const bouton = document.createElement("button");
+      bouton.type = "button";
+      bouton.textContent = texte;
+      bouton.addEventListener("click", () => {
+        champ.value = texte;
+        champ.focus();
+      });
+      return bouton;
+    }),
+  );
+}
+
+construireSuggestions();
 
 try {
   const sauvegarde = localStorage.getItem(CLE_STOCKAGE);
@@ -25,6 +52,8 @@ try {
   if (statut)
     statut.textContent = "Conversation précédente illisible, repartie de zéro.";
 }
+
+actualiserAccueil();
 
 function sauvegarder() {
   localStorage.setItem(CLE_STOCKAGE, JSON.stringify(historique));
@@ -48,6 +77,7 @@ formulaire?.addEventListener("submit", (event) => {
   historique.push({ role: "assistant", text: botReply });
 
   renderMessages(historique, liste);
+  actualiserAccueil();
   sauvegarder();
 
   champ.value = "";
@@ -60,6 +90,7 @@ btnEffacer?.addEventListener("click", () => {
   historique.length = 0;
   localStorage.removeItem(CLE_STOCKAGE);
   if (liste) renderMessages(historique, liste);
+  actualiserAccueil();
 });
 
 fetch("/version.json", { headers: { accept: "application/json" } })
