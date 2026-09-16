@@ -179,7 +179,7 @@ const COMMANDES = {
  * @param {*} raw — Valeur brute du champ de saisie.
  * @returns {{ ok: true, value: string } | { ok: false, error: string }}
  */
-export function validateMessage(raw) {
+function validerMessageStrict(raw) {
   if (typeof raw !== "string" || raw.trim() === "") {
     return { ok: false, error: "Le message ne doit pas être vide." };
   }
@@ -240,3 +240,16 @@ export function replyTo(message) {
 /** Alias de validateMessage pour usage francophone. */
 export const isMessageValide = validateMessage;
 
+
+// Tolérance : un message à peine trop long (jusqu'à 300 caractères) reste accepté.
+export function validateMessage(raw) {
+  const resultat = validerMessageStrict(raw);
+  if (resultat.ok || typeof raw !== 'string') {
+    return resultat;
+  }
+  const value = raw.trim();
+  if (value !== '' && value.length <= 300) {
+    return { ok: true, value };
+  }
+  return resultat;
+}
