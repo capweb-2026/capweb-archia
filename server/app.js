@@ -1,6 +1,8 @@
 import http from "node:http";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { validateMessage } from "../public/js/brain.js";
+import { repondreAvecIA } from "./ia.js";
 
 // Liste explicite : seuls ces chemins publics sont servis.
 const FICHIERS = {
@@ -23,6 +25,22 @@ const TYPES = {
   "js/view.js": "text/javascript; charset=utf-8",
 };
 
+function lireCorps(req) {
+  return new Promise((resolve, reject) => {
+    let corps = "";
+    req.on("data", (morceau) => {
+      corps += morceau;
+      if (corps.length > 1000000) {
+        reject(new Error("Corps trop volumineux."));
+      }
+    });
+    req.on("end", () => {
+      resolve(corps);
+    });
+    req.on("error", reject);
+  });
+}
+
 export function createApp({ publicDir, version = "dev" } = {}) {
   const serveur = http.createServer((req, res) => {
     traiter(req, res).catch(() => {
@@ -36,12 +54,6 @@ export function createApp({ publicDir, version = "dev" } = {}) {
 
   async function traiter(req, res) {
     const methode = (req.method ?? "GET").toUpperCase();
-    // Seules GET et HEAD sont autorisées (outillage statique J1).
-    if (methode !== "GET" && methode !== "HEAD") {
-      res.writeHead(405, { "content-type": "text/plain; charset=utf-8" });
-      res.end("Méthode non autorisée");
-      return;
-    }
     let chemin = "/";
     try {
       // URL puis décodage : tout encodage suspect hors liste donne 404.
@@ -50,6 +62,45 @@ export function createApp({ publicDir, version = "dev" } = {}) {
     } catch {
       res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
       res.end("Non trouvé");
+      return;
+    }
+    // Route de discussion : POST /api/chat avec { message }.
+    if (chemin === "/api/chat") {
+      if (methode !== "POST") {
+        res.writeHead(405, { "content-type": "text/plain; charset=utf-8" });
+        res.end("Méthode non autorisée");
+        return;
+      }
+      const brut = await lireCorps(req);
+      let message;
+      try {
+        message = JSON.parse(brut || "{}").message;
+      } catch {
+        message = undefined;
+      }
+      const validation = validateMessage(message);
+      if (!validation.ok) {
+        const erreur = JSON.stringify({ error: validation.error });
+        res.writeHead(400, {
+          "content-type": "application/json; charset=utf-8",
+          "content-length": Buffer.byteLength(erreur),
+        });
+        res.end(erreur);
+        return;
+      }
+      const resultat = await repondreAvecIA(validation.value);
+      const reponse = JSON.stringify(resultat);
+      res.writeHead(200, {
+        "content-type": "application/json; charset=utf-8",
+        "content-length": Buffer.byteLength(reponse),
+      });
+      res.end(reponse);
+      return;
+    }
+    // Seules GET et HEAD sont autorisées (outillage statique J1).
+    if (methode !== "GET" && methode !== "HEAD") {
+      res.writeHead(405, { "content-type": "text/plain; charset=utf-8" });
+      res.end("Méthode non autorisée");
       return;
     }
     // Métadonnée de version fournie au démarrage.
