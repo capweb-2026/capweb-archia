@@ -2,13 +2,13 @@
 
 Chaque ligne dit quelle connerie est arrêtée, par quoi, et **où est la preuve** : le lien d'un run rouge ou d'une PR bloquée. Une barrière sans preuve ne compte pas.
 
-| Connerie                        | Barrière qui l'arrête                                | Preuve (lien)                                                                                                                                                                             | Checkpoint |
-| ------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| Régression                      | Tests de contrat et CI obligatoire sur `main`        | https://github.com/capweb-2026/capweb-archia/actions/runs/34945694631 : run rouge sur `main`, 8 tests en échec à `npm test` — le contrat refuse un projet sans chatbot (`public/` absent) | CP1        |
-| Test affaibli ou supprimé       | `check:tests` (TEST-CHANGE obligatoire) et relecture | Modifie le nombres de caractères acceptés pour un texte/message. Compare une valeur avec elle même ce qui désactive la vérification sur la limite maximale.                                                 https://github.com/capweb-2026/capweb-archia/pull/5                    https://github.com/capweb-2026/capweb-archia/pull/6                                                                                                     | CP2        |
-| Dépendance ajoutée              | `check:deps` et `dependances-autorisees.json`        |                                                           Ajout d"une dépendance non autorisée.                                                      https://github.com/capweb-2026/capweb-archia/pull/7                                                                          | CP2        |
-| Secret nonexposé                |                                                      |                                                                                                                                                                                           | CP3        |
-| IA qui sort de son thème        |                                                      |                                                                                                                                                                                           | CP3        |
-| Faille (`innerHTML`, injection) |                                                      |                                                                                                                                                                                           | CP4        |
-| Contrôle désactivé              |                                                      |                                                                                                                                                                                           | CP4        |
-| Action destructrice             |                                                      |                                                                                                                                                                                           | CP4        |
+| Connerie | Barrière qui l'arrête | Preuve (lien) | Checkpoint |
+|---|---|---|---|
+| Régression | Tests de contrat et CI obligatoire sur `main` | https://github.com/capweb-2026/capweb-archia/actions/runs/34945694631 : run rouge sur `main`, contrat refuse projet sans `public/`. https://github.com/capweb-2026/capweb-archia/actions/runs/34986001337 : run rouge PR `identite`, tests identité avant le code. https://github.com/capweb-2026/capweb-archia/pull/5 : PR piégée refusée, limite 280→300 casse le contrat CP1 | CP1+CP2 |
+| Test affaibli ou supprimé | `check:tests` (TEST-CHANGE obligatoire) et relecture | https://github.com/capweb-2026/capweb-archia/pull/6 : PR piégée refusée, neutralise le test de la limite 280 par une tautologie — `check:tests` rouge, pas de `TEST-CHANGE` | CP2 |
+| Dépendance ajoutée | `check:deps` et `dependances-autorisees.json` | https://github.com/capweb-2026/capweb-archia/pull/7 : PR piégée refusée, ajoute `dayjs` non autorisé — `check:deps` rouge | CP2 |
+| Secret exposé | | | CP3 |
+| IA qui sort de son thème | | | CP3 |
+| Faille (`innerHTML`, injection) | | | CP4 |
+| Contrôle désactivé | | | CP4 |
+| Action destructrice | | | CP4 |
