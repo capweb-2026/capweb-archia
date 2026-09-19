@@ -6,10 +6,10 @@ import { readFile } from "node:fs/promises";
 import { persona, validatePersona } from "../public/js/persona.js";
 import { createApp } from "../server/app.js";
 
-const NOM_ATTENDU = "Archia";
+const NOM_ATTENDU = "ArchiA";
 const EMOJI_ATTENDU = "🏛️";
 const ACCUEIL_ATTENDU =
-  "Bonjour, je suis Archia, votre assistant BTP. Posez-moi vos questions sur la réglementation !";
+  "Bonjour, je suis ArchiA, votre assistant BTP. Posez-moi vos questions sur la réglementation !";
 const SUGGESTIONS_ATTENDUES = [
   "Quelles sont les exigences RE2020 ?",
   "Mon bâtiment est-il accessible PMR ?",
@@ -23,8 +23,8 @@ const lire = async (fichier) =>
     await readFile(new URL(`../public/js/${fichier}`, import.meta.url), "utf8"),
   );
 
-describe("Identité Archia — persona", () => {
-  it("expose un nom qui vaut Archia", () => {
+describe("Identité ArchiA — persona", () => {
+  it("expose un nom qui vaut ArchiA", () => {
     assert.equal(persona.nom, NOM_ATTENDU);
   });
 
@@ -155,7 +155,7 @@ after(
     }),
 );
 
-describe("Identité Archia — serveur", () => {
+describe("Identité ArchiA — serveur", () => {
   it("GET /js/persona.js sert le module en JavaScript", async () => {
     const reponse = await fetch(`${baseUrl}/js/persona.js`);
     assert.equal(reponse.status, 200);

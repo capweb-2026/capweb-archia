@@ -1,8 +1,8 @@
 export const persona = {
-  nom: 'Archia',
+  nom: 'ArchiA',
   emoji: '🏛️',
   accueil:
-    'Bonjour, je suis Archia, votre assistant BTP. Posez-moi vos questions sur la réglementation !',
+    'Bonjour, je suis ArchiA, votre assistant BTP. Posez-moi vos questions sur la réglementation !',
   suggestions: [
     'Quelles sont les exigences RE2020 ?',
     'Mon bâtiment est-il accessible PMR ?',
