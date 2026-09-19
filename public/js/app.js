@@ -59,7 +59,7 @@ function sauvegarder() {
   localStorage.setItem(CLE_STOCKAGE, JSON.stringify(historique));
 }
 
-formulaire?.addEventListener("submit", (event) => {
+formulaire?.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!champ || !liste || !statut) return;
 
@@ -72,16 +72,41 @@ formulaire?.addEventListener("submit", (event) => {
   }
 
   historique.push({ role: "user", text: result.value });
-
-  const botReply = replyTo(result.value);
-  historique.push({ role: "assistant", text: botReply });
-
   renderMessages(historique, liste);
   actualiserAccueil();
-  sauvegarder();
-
   champ.value = "";
   statut.textContent = "";
+
+  let botReply;
+  let degrade = false;
+  try {
+    const reponse = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ message: result.value }),
+    });
+    if (reponse.ok) {
+      const donnees = await reponse.json();
+      botReply = donnees.texte;
+      degrade = donnees.source !== "ia";
+    } else {
+      botReply = replyTo(result.value);
+      degrade = true;
+    }
+  } catch {
+    botReply = replyTo(result.value);
+    degrade = true;
+  }
+
+  historique.push({ role: "assistant", text: botReply });
+  renderMessages(historique, liste);
+  sauvegarder();
+
+  if (degrade) {
+    statut.textContent = "Mode dégradé — réponse par les règles locales.";
+  } else {
+    statut.textContent = "";
+  }
   champ.focus();
 });
 
