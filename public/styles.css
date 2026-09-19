@@ -1,10 +1,20 @@
 :root {
   color-scheme: light;
   --fond: #ffffff;
-  --texte: #111111;
-  --accent: #0b5fff;
-  --accent-fonce: #003ecb;
-  --bord: #333333;
+  --fond-chat: #ffffff;
+  --texte: #1a1a2e;
+  --texte-muted: #6b7280;
+  --accent: #059669;
+  --accent-fonce: #047857;
+  --accent-light: #ecfdf5;
+  --user-bg: #059669;
+  --user-text: #ffffff;
+  --bot-bg: #f1f5f9;
+  --bot-text: #1a1a2e;
+  --bord: #e2e8f0;
+  --bord-input: #cbd5e1;
+  --radius: 1rem;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -15,20 +25,47 @@ body {
   margin: 0;
   background: var(--fond);
   color: var(--texte);
-  font-family:
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: system-ui, -apple-system, sans-serif;
   line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-header,
-main,
-footer {
+header {
   width: 100%;
   max-width: 760px;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 1.5rem 1rem 1rem;
+  text-align: start;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  margin: 0 0 0.25rem;
+}
+
+header p {
+  color: var(--texte-muted);
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: justify;
+}
+
+main {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+main > section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 h1,
@@ -37,39 +74,120 @@ h2 {
   margin: 0 0 0.5rem;
 }
 
+h2 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texte-muted);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#accueil {
+  text-align: center;
+  background: var(--accent-light);
+  border: 1px solid var(--bord);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: var(--texte);
+}
+
+#suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+#suggestions button {
+  background: var(--fond-chat);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 2rem;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+#suggestions button:hover {
+  background: var(--accent);
+  color: var(--user-text);
+}
+
 #messages {
   list-style: none;
   margin: 0 0 1rem;
   padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 #messages li {
-  border: 1px solid var(--bord);
-  border-radius: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 0.5rem;
+  max-width: 80%;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius);
   overflow-wrap: break-word;
+  box-shadow: var(--shadow);
+  line-height: 1.5;
+  font-size: 0.95rem;
+  text-align: justify;
+}
+
+#messages li.msg-bot {
+  background: var(--bot-bg);
+  color: var(--bot-text);
+  align-self: flex-start;
+  border-bottom-left-radius: 0.25rem;
+}
+
+#messages li.msg-user {
+  background: var(--user-bg);
+  color: var(--user-text);
+  align-self: flex-end;
+  border-bottom-right-radius: 0.25rem;
 }
 
 form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  background: var(--fond-chat);
+  border: 1px solid var(--bord);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  box-shadow: var(--shadow);
 }
 
 label {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--texte-muted);
 }
 
 textarea {
   width: 100%;
-  min-height: 5rem;
-  padding: 0.5rem;
+  min-height: 3.5rem;
+  padding: 0.5rem 0.75rem;
   font: inherit;
+  font-size: 0.95rem;
   color: inherit;
   background: var(--fond);
-  border: 2px solid var(--bord);
+  border: 1px solid var(--bord-input);
   border-radius: 0.5rem;
+  resize: vertical;
+}
+
+textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
 }
 
 .actions {
@@ -79,18 +197,32 @@ textarea {
 }
 
 button {
-  padding: 0.6rem 1.2rem;
+  padding: 0.5rem 1.25rem;
   font: inherit;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 600;
   color: #ffffff;
   background: var(--accent);
-  border: 2px solid var(--accent-fonce);
+  border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: background 0.15s;
 }
 
 button:hover {
   background: var(--accent-fonce);
+}
+
+#effacer {
+  background: transparent;
+  color: var(--texte-muted);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+#effacer:hover {
+  color: #dc2626;
+  background: #fef2f2;
 }
 
 :focus-visible {
@@ -100,9 +232,18 @@ button:hover {
 
 #status {
   min-height: 1.5em;
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #dc2626;
+  text-align: center;
 }
 
 footer {
-  font-size: 0.9rem;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  color: var(--texte-muted);
+  text-align: center;
 }

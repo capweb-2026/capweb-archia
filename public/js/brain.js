@@ -143,9 +143,9 @@ const REGLES = [
 const COMMANDES = {
   aide: {
     texte:
-      "Commandes disponibles : aide, salut, bonjour.\n" +
-      "Thèmes reconnus : re2020, bbio, rénovation, isolation, pmr, accessibilité, erp, patrimoine, abf, réhabilitation.\n" +
-      "Posez votre question en langage naturel !",
+      "Voici comment je peux vous aider :\n" +
+      "Mes domaines d'expertise : RE2020, Bbio, rénovation, isolation, PMR, accessibilité, ERP, patrimoine, ABF, réhabilitation.\n" +
+      "N'hésitez pas à poser votre question comme vous le feriez à un collègue !",
     schema:
       "graph LR\n" +
       "  U[Utilisateur] --> B[Brain.js]\n" +
@@ -156,16 +156,16 @@ const COMMANDES = {
   },
   salut: {
     texte:
-      'Bonjour ! Je suis votre assistant BTP. Tapez "aide" pour voir les thèmes disponibles.',
+      "Bonjour ! Ravie de vous retrouver. Je suis Archia, votre assistante spécialisée dans la réglementation BTP. Comment puis-je vous aider aujourd'hui ?",
     schema: "",
   },
   bonjour: {
     texte:
-      'Bonjour ! Je suis votre assistant BTP. Tapez "aide" pour voir les thèmes disponibles.',
+      "Bonjour ! Ravie de vous retrouver. Je suis Archia, votre assistante spécialisée dans la réglementation BTP. Comment puis-je vous aider aujourd'hui ?",
     schema: "",
   },
   test: {
-    texte: "Système opérationnel. Moteur de règles BTP prêt.",
+    texte: "Tout fonctionne parfaitement de mon côté ! Je suis prête à répondre à vos questions sur la réglementation BTP.",
     schema: "",
   },
 };
@@ -218,8 +218,9 @@ export function repondre(message) {
   // 3. Réponse de repli
   return {
     texte:
-      "Je n'ai pas trouvé de règle correspondante.\n" +
-      'Essayez : re2020, rénovation, pmr, patrimoine — ou tapez "aide".',
+      "Je ne connais pas encore ce sujet, mais je progresse chaque jour !\n" +
+      "En attendant, je peux vous renseigner sur : RE2020, rénovation énergétique, accessibilité PMR ou patrimoine.\n" +
+      'Tapez "aide" pour voir tout ce que je sais faire.',
     schema: "",
   };
 }
