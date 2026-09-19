@@ -103,9 +103,9 @@ describe("CP3 — IA en échec (fournisseur fictif)", () => {
   });
 });
 
-describe("CP3 — IA trop lente (délai maximal 4s)", () => {
-  it("le délai maximal par défaut vaut 4000 ms", () => {
-    assert.equal(delaiDefaut(), 4000, "délai maximal attendu : 4000 ms (4s)");
+describe("CP3 — IA trop lente (délai maximal 10s)", () => {
+  it("le délai maximal par défaut vaut 10000 ms", () => {
+    assert.equal(delaiDefaut(), 10000, "délai maximal attendu : 10000 ms (10s)");
   });
 
   it("fournisseur trop lent : bascule en { source: 'regles', texte: replyTo }", async () => {

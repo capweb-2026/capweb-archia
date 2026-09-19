@@ -1,6 +1,6 @@
 import { validateMessage, replyTo } from "../public/js/brain.js";
 
-export const DELAI_MAX_MS = 4000;
+export const DELAI_MAX_MS = 10000;
 
 const PROMPT_SYSTEME =
   "Tu es ArchiA, assistant spécialisé dans la réglementation BTP en France " +
