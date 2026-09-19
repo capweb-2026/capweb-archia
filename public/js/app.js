@@ -77,25 +77,33 @@ formulaire?.addEventListener("submit", async (event) => {
   champ.value = "";
   statut.textContent = "";
 
+  const commandesLocales = ["salut", "bonjour", "aide", "test"];
+  const estCommande = commandesLocales.includes(result.value.trim().toLowerCase());
+
   let botReply;
   let degrade = false;
-  try {
-    const reponse = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ message: result.value }),
-    });
-    if (reponse.ok) {
-      const donnees = await reponse.json();
-      botReply = donnees.texte;
-      degrade = donnees.source !== "ia";
-    } else {
+
+  if (estCommande) {
+    botReply = replyTo(result.value);
+  } else {
+    try {
+      const reponse = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ message: result.value }),
+      });
+      if (reponse.ok) {
+        const donnees = await reponse.json();
+        botReply = donnees.texte;
+        degrade = donnees.source !== "ia";
+      } else {
+        botReply = replyTo(result.value);
+        degrade = true;
+      }
+    } catch {
       botReply = replyTo(result.value);
       degrade = true;
     }
-  } catch {
-    botReply = replyTo(result.value);
-    degrade = true;
   }
 
   historique.push({ role: "assistant", text: botReply });
